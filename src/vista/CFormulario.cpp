@@ -16,8 +16,7 @@ CMedicamento CFormulario::pedirMedicamento(){
 }
 
 int CFormulario::pedirId(){
-    // STUB (Grupo 2): implementar
-    return 0;
+    return validador.leerEntero("Id del medicamento: ", 1, 1000000);
 }
 
 int CFormulario::pedirCantidad(){
