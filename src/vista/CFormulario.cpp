@@ -15,9 +15,14 @@ CMedicamento CFormulario::pedirMedicamento(){
     return CMedicamento(0, "", 0, 0, 0, 0);
 }
 
+/**
+ * @brief Pide al usuario el id de un medicamento.
+ * @details
+ * Le delega la lectura al CValidador, indicando que el id debe ser un número entre 1 y 1000.
+ * @return El id ingresado por el usuario.
+ */
 int CFormulario::pedirId(){
-    // STUB (Grupo 2): implementar
-    return 0;
+    return validador.leerEntero("Id del medicamento: ", 1, 1000);
 }
 
 int CFormulario::pedirCantidad(){

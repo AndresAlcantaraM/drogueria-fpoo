@@ -10,8 +10,18 @@ using namespace std;
 CBuscador::CBuscador(const CInventario& inventario_) : inventario(inventario_) {
 }
 
+/**
+ * @brief Busca un medicamento por su id.
+ * @param id Identificador único.
+ * @return Puntero a medicamento o nullptr. 
+ */
 const CMedicamento* CBuscador::porId(int id) const{
-    // STUB (Grupo 6): implementar
+    const vector<CMedicamento>& medicamentos = inventario.getMedicamentos();
+    for(size_t i = 0; i < medicamentos.size(); i++){
+        if(medicamentos[i].getId() == id){
+            return &medicamentos[i];
+        }
+    }
     return nullptr;
 }
 
