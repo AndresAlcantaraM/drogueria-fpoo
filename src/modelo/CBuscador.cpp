@@ -12,49 +12,79 @@ static string aMinusculas(string str) {
     return str;
 }
 
-CBuscador::CBuscador(const CInventario& inv) : inventario(inv) {}
-
-const CMedicamento* CBuscador::porId(int id) const {
-    for (const auto& m : inventario.getMedicamentos()) {
-        if (m.getId() == id) {
-            return &m;
+/**
+ * @brief Busca un medicamento por id.
+ * @param id entero.
+ * @return Puntero al medicamento que coincide en el id o nullptr. 
+ */
+const CMedicamento* CBuscador::porId(int id) const{
+    const vector<CMedicamento>& medicamentos = inventario.getMedicamentos();
+    for(size_t i = 0; i < medicamentos.size(); i++){
+        if(medicamentos[i].getId() == id){
+            return &medicamentos[i];
         }
     }
     return nullptr;
 }
 
-vector<CMedicamento> CBuscador::porNombre(string texto) const {
-    vector<CMedicamento> resultado;
-    if (texto.empty()) {
-        return resultado;
+/**
+ * @brief Busca medicamentos por el nombre.
+ * @param texto string.
+ * @return Vector de CMedicamento. 
+ */
+vector<CMedicamento> CBuscador::porNombre(string texto) const{
+    const vector<CMedicamento>& medicamentos = inventario.getMedicamentos();
+    vector<CMedicamento> coincidencias;
+
+    for(char &c : texto){
+        c = towlower(c);
     }
-    string busqueda = aMinusculas(texto);
-    for (const auto& m : inventario.getMedicamentos()) {
-        string nombreMed = aMinusculas(m.getNombre());
-        if (nombreMed.find(busqueda) != string::npos) {
-            resultado.push_back(m);
+
+    for(size_t i = 0; i < medicamentos.size(); i++){
+        string nombre = medicamentos[i].getNombre();
+        for(char &c : nombre){
+            c = tolower(c);
+        }
+
+        if(nombre.find(texto) != string::npos){
+            coincidencias.push_back(medicamentos[i]);
         }
     }
-    return resultado;
+
+    return coincidencias;
 }
 
-vector<CMedicamento> CBuscador::porRangoPrecio(float minimo, float maximo) const {
-    vector<CMedicamento> resultado;
-    for (const auto& m : inventario.getMedicamentos()) {
-        float precio = m.getPrecioDeVenta();
-        if (precio >= minimo && precio <= maximo) {
-            resultado.push_back(m);
+/**
+ * @brief Filtra los medicamentos por un rango de precio.
+ * @param minimo float, maximo float.
+ * @return Vector de CMedicamento.
+ */
+vector<CMedicamento> CBuscador::porRangoPrecio(float minimo, float maximo) const{
+    const vector<CMedicamento>& medicamentos = inventario.getMedicamentos();
+    vector<CMedicamento> coincidencias;
+
+    for(size_t i = 0; i < medicamentos.size(); i++){
+        if(medicamentos[i].getPrecioDeVenta() >= minimo && medicamentos[i].getPrecioDeVenta() <= maximo){
+            coincidencias.push_back(medicamentos[i]);
         }
     }
-    return resultado;
+
+    return coincidencias;
 }
 
-vector<CMedicamento> CBuscador::conPocoStock(int umbral) const {
-    vector<CMedicamento> resultado;
-    for (const auto& m : inventario.getMedicamentos()) {
-        if (m.getCantidadDisponible() <= umbral) {
-            resultado.push_back(m);
+/**
+ * @brief Busca medicamentos con bajo stock (menor que umbral).
+ * @param umbral int.
+ * @return Vector de CMedicamento.
+ */
+vector<CMedicamento> CBuscador::conPocoStock(int umbral) const{
+    const vector<CMedicamento>& medicamentos = inventario.getMedicamentos();
+    vector<CMedicamento> coincidencias;
+
+    for(const auto& med : medicamentos){
+        if(med.getCantidadDisponible() < umbral){
+            coincidencias.push_back(med);
         }
     }
-    return resultado;
+    return coincidencias;
 }
