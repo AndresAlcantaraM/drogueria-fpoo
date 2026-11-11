@@ -41,6 +41,19 @@ int main(){
         CHECK_CONTIENE(out.str(), "Tableta");
     }
 
+    SECCION("Extra Grupo 4: Formato de moneda con separador de miles"); {
+        stringstream out;
+        CPresentador p(out);
+        vector<CMedicamento> lista;
+        lista.push_back(CMedicamento(101, "Acetaminofen", 1, 50, 1500, 1250000));
+
+        p.mostrarMedicamentos(lista);
+        string salidaTexto = out.str();
+
+        // Verifica que se incluyan el signo $ y el separador por punto '.'
+        CHECK_CONTIENE(salidaTexto, "$1.500");
+        CHECK_CONTIENE(salidaTexto, "$1.250.000");
+    }
     // TODO (Grupo 4): lista vacía, nombres muy largos, títulos, etc.
 
     return RESUMEN();

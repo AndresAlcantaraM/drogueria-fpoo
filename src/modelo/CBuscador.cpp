@@ -1,13 +1,15 @@
-/*
-    Proyecto: Drogueria - FPOO - Universidad del Valle
-    Módulo: Búsqueda (GRUPO 6)
-
-    ESTE ARCHIVO ES TUYO: reemplaza los STUB por la implementación real.
-*/
 #include "CBuscador.h"
+#include <algorithm>
+#include <cctype>
+
 using namespace std;
 
-CBuscador::CBuscador(const CInventario& inventario_) : inventario(inventario_) {
+// Función auxiliar para convertir a minúsculas
+static string aMinusculas(string str) {
+    for (char &c : str) {
+        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
+    }
+    return str;
 }
 
 /**
